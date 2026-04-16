@@ -1,0 +1,877 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<!-- favicon -->
+    	<link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+		<title>Extending Universal Manipulation Interface from Vision-Limited to 3D Spatial Perception</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=1000">
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-LS6L6LB7RX"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-LS6L6LB7RX');
+		</script>
+
+		<meta property="og:url"           content="https://umi-gripper.github.io" />
+		<meta property="og:type"          content="website" />
+		<meta property="og:title"         content="Extending Universal Manipulation Interface from Vision-Limited to 3D Spatial Perception" />
+		<meta property="og:description"   content="We present Universal Manipulation Interface (UMI) -- a data collection and policy learning framework that allows direct skill transfer from in-the-wild human demonstrations to deployable robot policies. UMI employs hand-held grippers coupled with careful interface design to enable portable, low-cost, and information-rich data collection for challenging bimanual and dynamic manipulation demonstrations. To facilitate deployable policy learning, UMI incorporates a carefully designed policy interface with inference-time latency matching and a relative-trajectory action representation. The resulting learned policies are hardware-agnostic and deployable across multiple robot platforms. Equipped with these features, UMI framework unlocks new robot manipulation capabilities, allowing zero-shot generalizable dynamic, bimanual, precise, and long-horizon behaviors, by only changing the training data for each task. We demonstrate UMI’s versatility and efficacy with comprehensive real-world experiments, where policies learned via UMI zero-shot generalize to novel environments and objects when trained on diverse human demonstrations." />
+
+		<style>
+			.eval-card {
+				border: 1px solid #e6e6e6;
+				border-radius: 12px;
+				padding: 0.9em;
+				margin-bottom: 1.2em;
+				background: #fff;
+			}
+
+			.eval-grid {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 14px;
+				margin-top: 0.6em;
+			}
+
+			.eval-grid .cell {
+				box-sizing: border-box;
+				padding: 0;
+			}
+
+			.eval-grid video {
+				width: 100%;
+				display: block;
+				border-radius: 10px;
+				border: 1px solid #e6e6e6;
+				background: #000;
+			}
+
+			.eval-caption {
+				margin-top: 0.45em;
+				font-size: 0.95em;
+				color: #333;
+				text-align: center;
+				font-weight: 600;
+			}
+
+			@media screen and (max-width: 700px) {
+				.eval-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			/* ===== Quick Links compact two-row aligned style ===== */
+			.quick-links-wrap {
+				margin-top: 0.45em;
+				margin-bottom: 1.05em;
+			}
+
+			.quick-links-grid {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 12px;
+				margin-bottom: 8px;
+			}
+
+			.quick-link-card {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 12px;
+				text-decoration: none;
+				color: #fff !important;
+				background: linear-gradient(180deg, #34363b 0%, #2c2e33 100%);
+				border: 1px solid rgba(255,255,255,0.08);
+				border-radius: 14px;
+				padding: 12px 14px;
+				min-height: 62px;
+				box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+				transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+				position: relative;
+				overflow: hidden;
+			}
+
+			.quick-link-card:hover {
+				transform: translateY(-2px);
+				border-color: rgba(255,255,255,0.16);
+				box-shadow: 0 12px 28px rgba(0,0,0,0.16);
+				background: linear-gradient(180deg, #3a3d43 0%, #31343a 100%);
+			}
+
+			.quick-link-main {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				min-width: 0;
+				flex: 1 1 auto;
+			}
+
+			.quick-link-icon {
+				width: 34px;
+				height: 34px;
+				border-radius: 10px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background: rgba(255,255,255,0.08);
+				border: 1px solid rgba(255,255,255,0.06);
+				color: #fff;
+				font-size: 0.95em;
+				flex: 0 0 auto;
+			}
+
+			.quick-link-title {
+				font-size: 0.97em;
+				font-weight: 760;
+				line-height: 1.15;
+				color: #fff;
+				letter-spacing: 0.005em;
+				white-space: normal;
+				overflow: visible;
+				text-overflow: unset;
+			}
+
+			.quick-link-arrow {
+				color: rgba(255,255,255,0.38);
+				font-size: 0.84em;
+				font-weight: 700;
+				transition: opacity 0.22s ease, transform 0.22s ease, color 0.22s ease;
+				flex: 0 0 auto;
+			}
+
+			.quick-link-card:hover .quick-link-arrow {
+				color: rgba(255,255,255,0.88);
+				transform: translateX(1px);
+			}
+
+			@media screen and (max-width: 900px) {
+				.quick-links-grid {
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+				}
+			}
+
+			@media screen and (max-width: 560px) {
+				.quick-links-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+	</head>
+
+	<body id="top">
+
+		<!-- Main -->
+		<div id="main" style="padding-bottom:1em; padding-top: 2em; width: 60em; max-width: 70em; margin-left: auto; margin-right: auto;">
+			<section id="four">
+
+				<!-- Stanford Logo -->
+				<div style="
+					text-align:center;
+					margin: 0 auto;
+				">
+					<img src="images/lab_logo.png" 
+						alt=""
+						style="
+							height:70px;
+							width:auto;
+							display:block;
+							margin:0 auto;
+						">
+				</div>
+
+				<!-- ================= HERO TITLE BLOCK ================= -->
+				<div style="text-align:center; margin-top:0.6em; margin-bottom:1.6em;">
+
+					<h1 style="
+						text-align:center;
+						margin:0;
+						font-size:360%;
+						font-weight:850;
+						letter-spacing:0.02em;
+						line-height:1.05;
+					">
+						<span style="color:#8C1515;">UMI-3D</span>
+					</h1>
+
+					<div style="
+						margin-top:12px;
+						font-size:200%;
+						font-weight:620;
+						letter-spacing:0.01em;
+						line-height:1.25;
+						background: linear-gradient(90deg, #000000, #000000);
+						-webkit-background-clip:text;
+						-webkit-text-fill-color:transparent;
+					">
+						Extending UMI from Vision-Limited to 3D Spatial Perception
+					</div>
+
+					<div style="
+						margin-top:10px;
+						font-size:185%;
+						font-weight:520;
+						letter-spacing:0.01em;
+						color:#5b5b5b;
+						line-height:1.18;
+					">
+						When <span style="color:#006341;">Vision</span> Fails,
+						<span style="color:#005CAA;">LiDAR</span> Takes Over.
+					</div>
+
+					<div style="
+						margin-top:10px;
+						font-size:126%;
+						font-weight:500;
+						letter-spacing:0.004em;
+						line-height:1.7;
+						max-width:780px;
+						margin-left:auto;
+						margin-right:auto;
+						text-align:center;
+					">
+						<div style="
+							background: linear-gradient(90deg, #000000, #555555);
+							-webkit-background-clip:text;
+							-webkit-text-fill-color:transparent;
+						">
+							<span style="
+										background: linear-gradient(90deg, #000000, #C65D2E);
+										-webkit-background-clip:text;
+										-webkit-text-fill-color:transparent;
+										font-weight:650;
+										text-shadow: 0px 0px 10px rgba(0, 92, 170, 0.18);
+									">
+										Cost < 5000 RMB (700 $).
+							</span>
+							
+						</div>
+
+						<div style="
+							background: linear-gradient(90deg, #000000, #000000);
+							-webkit-background-clip:text;
+							-webkit-text-fill-color:transparent;
+						">
+							<span style="
+										background: linear-gradient(90deg, #000000, #C65D2E);
+										-webkit-background-clip:text;
+										-webkit-text-fill-color:transparent;
+										font-weight:650;
+										text-shadow: 0px 0px 10px rgba(0, 92, 170, 0.18);
+									">
+										Robust SLAM.
+							</span>
+							  No External Infrastructure.
+						</div>
+
+						<div style="
+							margin-top:0px;
+							background: linear-gradient(90deg, #000000, #000000);
+							-webkit-background-clip:text;
+							-webkit-text-fill-color:transparent;
+						">
+							<span style="
+											background: linear-gradient(90deg, #000000, #C65D2E);
+											-webkit-background-clip:text;
+											-webkit-text-fill-color:transparent;
+											font-weight:650;
+											text-shadow: 0px 0px 10px rgba(0, 92, 170, 0.18);
+										">
+											Unfazed 
+							</span>
+							by Occlusion, Dynamics, and Tracking Loss.
+						</div>
+
+						<!-- <div style="
+							margin-top:0px;
+							background: linear-gradient(90deg, #000000, #000000);
+							-webkit-background-clip:text;
+							-webkit-text-fill-color:transparent;
+						">
+							Precise Spatiotemporal Fusion of Vision and 3D Perception.
+						</div> -->
+
+						<div style="
+							margin-top:0px;
+							font-weight:520;
+							background: linear-gradient(90deg, #000000, #000000);
+							-webkit-background-clip:text;
+							-webkit-text-fill-color:transparent;
+						">
+							<span style="
+									background: linear-gradient(90deg, #000000, #C65D2E);
+									-webkit-background-clip:text;
+									-webkit-text-fill-color:transparent;
+									font-weight:650;
+									text-shadow: 0px 0px 10px rgba(0, 92, 170, 0.18);
+								">
+									Fully Open-Source.
+							</span>
+							 Building Embodied Intelligence 
+							<span style="
+								background: linear-gradient(90deg, #C65D2E, #000000);
+								-webkit-background-clip:text;
+								-webkit-text-fill-color:transparent;
+								font-weight:650;
+								text-shadow: 0px 0px 10px rgba(0, 92, 170, 0.18);
+							">
+								at Home
+							</span>.
+						</div>
+
+					</div>
+
+				</div>
+				<!-- ================= END HERO ================= -->
+
+				<!-- ================= QUICK LINKS ================= -->
+				<div class="quick-links-wrap">
+					<div class="quick-links-grid">
+
+						<a class="quick-link-card" href="#hardware_design">
+							<div class="quick-link-main">
+								<div class="quick-link-icon">
+									<i class="fa-solid fa-screwdriver-wrench"></i>
+								</div>
+								<div class="quick-link-title">Hardware</div>
+							</div>
+							<div class="quick-link-arrow">
+								<i class="fa-solid fa-arrow-up-right-from-square"></i>
+							</div>
+						</a>
+
+						<a class="quick-link-card" href="#slam_data">
+							<div class="quick-link-main">
+								<div class="quick-link-icon">
+									<i class="fa-solid fa-location-crosshairs"></i>
+								</div>
+								<div class="quick-link-title">SLAM / Data Processing</div>
+							</div>
+							<div class="quick-link-arrow">
+								<i class="fa-solid fa-arrow-up-right-from-square"></i>
+							</div>
+						</a>
+
+						<a class="quick-link-card" href="#policy">
+							<div class="quick-link-main">
+								<div class="quick-link-icon">
+									<i class="fa-solid fa-robot"></i>
+								</div>
+								<div class="quick-link-title">Policy Training / Inference</div>
+							</div>
+							<div class="quick-link-arrow">
+								<i class="fa-solid fa-arrow-up-right-from-square"></i>
+							</div>
+						</a>
+
+						<a class="quick-link-card" href="#dataset">
+							<div class="quick-link-main">
+								<div class="quick-link-icon">
+									<i class="fa-solid fa-database"></i>
+								</div>
+								<div class="quick-link-title">Dataset / Models</div>
+							</div>
+							<div class="quick-link-arrow">
+								<i class="fa-solid fa-arrow-up-right-from-square"></i>
+							</div>
+						</a>
+
+						<a class="quick-link-card" href="https://github.com/Physical-Intelligence-Laboratory" target="_blank" rel="noopener noreferrer">
+							<div class="quick-link-main">
+								<div class="quick-link-icon">
+									<i class="fa-brands fa-weixin"></i>
+								</div>
+								<div class="quick-link-title">Community</div>
+							</div>
+							<div class="quick-link-arrow">
+								<i class="fa-solid fa-arrow-up-right-from-square"></i>
+							</div>
+						</a>
+
+						<a class="quick-link-card" href="https://github.com/Physical-Intelligence-Laboratory" target="_blank" rel="noopener noreferrer">
+							<div class="quick-link-main">
+								<div class="quick-link-icon">
+									<i class="fa-regular fa-file-lines"></i>
+								</div>
+								<div class="quick-link-title">Blog</div>
+							</div>
+							<div class="quick-link-arrow">
+								<i class="fa-solid fa-arrow-up-right-from-square"></i>
+							</div>
+						</a>
+
+					</div>
+				</div>
+				<!-- ================= END QUICK LINKS ================= -->
+
+				<!-- ================= OVERVIEW IMAGE ================= -->
+				<div style="margin-top: 0.4em; margin-bottom: 1.2em;">
+					<span class="image fit" style="border: 1px solid; border-color: #e0e0e0; border-radius: 12px; overflow:hidden;">
+						<img src="images/umi3d_overview.jpg" alt="UMI-3D Overview">
+					</span>
+				</div>
+				<!-- ================= END OVERVIEW ================= -->
+
+				<hr>
+
+				<!-- ================= HARDWARE DESIGN ================= -->
+				<h2 id="hardware_design">
+				<a href="https://github.com/Physical-Intelligence-Laboratory/UMI-3D-Hardware"
+					target="_blank" rel="noopener noreferrer"
+					style="text-decoration:none;color:inherit;display:inline-flex;align-items:center;gap:6px;">
+					
+					Hardware Design
+					
+					<!-- 👇 SVG 就放这里 -->
+					<svg height="18" viewBox="0 0 16 16" width="18" fill="currentColor">
+					<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 
+					7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49
+					-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94
+					-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
+					1.08.58 1.23.82.72 1.21 1.87.87 
+					2.33.66.07-.52.28-.87.51-1.07
+					-1.78-.2-3.64-.89-3.64-3.95
+					0-.87.31-1.59.82-2.15-.08-.2
+					-.36-1.02.08-2.12 0 0 .67-.21 
+					2.2.82a7.65 7.65 0 0 1 2-.27
+					c.68 0 1.36.09 2 .27 1.53-1.04
+					2.2-.82 2.2-.82.44 1.1.16 
+					1.92.08 2.12.51.56.82 1.27.82 
+					2.15 0 3.07-1.87 3.75-3.65 
+					3.95.29.25.54.73.54 1.48
+					0 1.07-.01 1.93-.01 2.2
+					0 .21.15.46.55.38A8.013 
+					8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+					</svg>
+
+				</a>
+				</h2>
+
+				<div class="box alt" style="margin-bottom: 1em;">
+					<div class="row 50% uniform" style="width: 100%; margin-top: 0.5em;">
+						<div class="2u" style="font-size: 1em; line-height: 1.5em; text-align: center; width: 50%; box-sizing:border-box; padding-right:0.5em;">
+							<div style="font-weight:700; margin-bottom:0.5em; color:#111;">Real Hardware</div>
+							<span class="image fit" style="border: 1px solid #e0e0e0; border-radius: 12px; overflow:hidden;">
+								<img src="images/umi3d_real_gripper.jpg" alt="UMI-3D Real Gripper" style="display:block; width:100%; height:auto;">
+							</span>
+						</div>
+
+						<div class="2u" style="font-size: 1em; line-height: 1.5em; text-align: center; width: 50%; box-sizing:border-box; padding-left:0.5em;">
+							<div style="font-weight:700; margin-bottom:0.5em; color:#111;">CAD Overview</div>
+							<span class="image fit" style="border: 1px solid #e0e0e0; border-radius: 12px; overflow:hidden;">
+								<img src="images/umi3d_cad_overview.jpg" alt="UMI-3D CAD Overview" style="display:block; width:100%; height:auto;">
+							</span>
+
+							<div style="margin-top:0.6em; font-size:0.95em;">
+								<a href="https://cad.onshape.com/documents/c9e31f296203311b15bbef9f/w/4cbb703a6e56db74890e5c7c/e/bc366516274ebba7413ed208?renderMode=0&uiState=69a4cdda3119fcde879ae7e5"
+								   target="_blank" rel="noopener noreferrer"
+								   style="display:inline-block; padding:0.55em 0.9em; border-radius:10px; border:1px solid #ddd; background:#fafafa; font-weight:700;">
+									🔗 Open Source in Onshape
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- ================= END HARDWARE DESIGN ================= -->
+
+				<hr>
+
+				<!-- ================= SLAM & DATA ================= -->
+				<h2 id="slam_data">
+				<a href="https://github.com/hku-mars/UMI-3D"
+					target="_blank" rel="noopener noreferrer"
+					style="text-decoration:none;color:inherit;display:inline-flex;align-items:center;gap:6px;">
+					
+					SLAM & Data Processing
+					
+					<!-- 👇 SVG 就放这里 -->
+					<svg height="18" viewBox="0 0 16 16" width="18" fill="currentColor">
+					<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 
+					7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49
+					-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94
+					-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
+					1.08.58 1.23.82.72 1.21 1.87.87 
+					2.33.66.07-.52.28-.87.51-1.07
+					-1.78-.2-3.64-.89-3.64-3.95
+					0-.87.31-1.59.82-2.15-.08-.2
+					-.36-1.02.08-2.12 0 0 .67-.21 
+					2.2.82a7.65 7.65 0 0 1 2-.27
+					c.68 0 1.36.09 2 .27 1.53-1.04
+					2.2-.82 2.2-.82.44 1.1.16 
+					1.92.08 2.12.51.56.82 1.27.82 
+					2.15 0 3.07-1.87 3.75-3.65 
+					3.95.29.25.54.73.54 1.48
+					0 1.07-.01 1.93-.01 2.2
+					0 .21.15.46.55.38A8.013 
+					8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+					</svg>
+
+				</a>
+				</h2>
+				<h2 id="slam_data"></h2>
+
+				<div class="box alt" style="margin-bottom: 1em;">
+
+				<!-- Video 1 -->
+				<div style="margin-bottom: 2em; text-align: center;">
+					<video controls playsinline style="width: 100%;">
+						<source src="videos/slam_white_wall.mp4" type="video/mp4">
+					</video>
+					<div style="margin-top: 0.5em;">White Wall (weak texture)</div>
+				</div>
+
+				<!-- Video 2 -->
+				<div style="margin-bottom: 2em; text-align: center;">
+					<video controls playsinline style="width: 100%;">
+						<source src="videos/slam_curtain.mp4" type="video/mp4">
+					</video>
+					<div style="margin-top: 0.5em;">Curtain (weak texture, dynamic objects, light changes)</div>
+				</div>
+
+				<!-- Video 3 -->
+				<div style="margin-bottom: 2em; text-align: center;">
+					<video controls playsinline style="width: 100%;">
+						<source src="videos/slam_door_cup.mp4" type="video/mp4">
+					</video>
+					<div style="margin-top: 0.5em;">Sliding Door (dynamic objects, light changes, precise operation)</div>
+				</div>
+
+			</div>
+
+				<hr>
+
+				<!-- ================= POLICY ================= -->
+				<h2 id="policy">Policy Training & Deployment</h2>
+
+				<h3>Task 1 — Cup → Saucer Placement ☕️</h3>
+				<!-- 第一行：两个视频 -->
+				<div class="eval-grid" style="margin-bottom:14px;">
+					<div class="cell">
+						<video controls playsinline>
+							<source src="videos/policy_cup_01.mp4" type="video/mp4">
+						</video>
+						<div class="eval-caption">Trial 1</div>
+					</div>
+
+					<div class="cell">
+						<video controls playsinline>
+							<source src="videos/data_cup.mp4" type="video/mp4">
+						</video>
+						<div class="eval-caption">Training Data</div>
+					</div>
+				</div>
+
+				<!-- 第二行：视频 + 表格（关键） -->
+				<div style="
+					display: flex;
+					gap: 14px;
+					align-items: stretch;
+				">
+
+					<!-- 左：视频 -->
+					<div style="flex: 1.2;">
+						<video controls playsinline style="
+							width:100%;
+							height:100%;
+							object-fit: cover;
+							border-radius: 10px;
+							border: 1px solid #e6e6e6;
+							background:#000;
+						">
+							<source src="videos/all_cup_exp.mp4" type="video/mp4">
+						</video>
+						<div class="eval-caption">All Experiments and Scores</div>
+					</div>
+
+					<!-- 右：表格 -->
+					<div style="flex: 1;">
+						<div style="
+							height:100%;
+							display:flex;
+							flex-direction:column;
+							justify-content:center;
+						">
+							<span class="image fit" style="
+								border: 1px solid #e0e0e0;
+								border-radius: 10px;
+								overflow: hidden;
+								background:#fafafa;
+								display:flex;
+								align-items:center;
+								justify-content:center;
+								height:100%;
+							">
+								<img src="images/cup_experiment_table.jpg"
+									style="
+										max-height:100%;
+										max-width:100%;
+										object-fit:contain;
+									">
+							</span>
+						</div>
+						<div class="eval-caption">Generalization Results</div>
+					</div>
+				</div>
+				<br>
+
+				<br>
+				<h3>Task 2 — Curtain Pulling 🎪</h3>
+				<div style="
+					display: flex;
+					gap: 14px;
+					align-items: stretch;
+				">
+
+					<!-- 左：视频 -->
+					<div style="flex: 3.8;">
+						<video controls playsinline style="
+							width:100%;
+							height:100%;
+							object-fit: cover;
+							border-radius: 10px;
+							border: 1px solid #e6e6e6;
+							background:#000;
+						">
+							<source src="videos/policy_curtain_01.mp4" type="video/mp4">
+						</video>
+						<div class="eval-caption">All Experiments and Scores</div>
+					</div>
+
+					<!-- 右：表格 -->
+					<div style="flex: 1;">
+						<div style="
+							height:100%;
+							display:flex;
+							flex-direction:column;
+							justify-content:center;
+						">
+							<span class="image fit" style="
+								border: 1px solid #e0e0e0;
+								border-radius: 10px;
+								overflow: hidden;
+								background:#fafafa;
+								display:flex;
+								align-items:center;
+								justify-content:center;
+								height:100%;
+							">
+								<img src="images/curtain_score.jpg"
+									style="
+										max-height:100%;
+										max-width:100%;
+										object-fit:contain;
+									">
+							</span>
+						</div>
+						<div class="eval-caption">
+							Generalization Results
+						</div>
+					</div>
+				</div>
+				<br>				
+
+				<br>	
+				<h3>Task 3 — Open Sliding Door → Grasp Cup → Place on Table 🚪☕️⛩</h3>
+				<div style="
+					display: flex;
+					gap: 14px;
+					align-items: stretch;
+				">
+
+					<!-- 左：视频 -->
+					<div style="flex: 1.2;">
+						<video controls playsinline style="
+							width:100%;
+							height:100%;
+							object-fit: cover;
+							border-radius: 10px;
+							border: 1px solid #e6e6e6;
+							background:#000;
+						">
+							<source src="videos/policy_door_01.mp4" type="video/mp4">
+						</video>
+						<div class="eval-caption">All Experiments and Scores</div>
+					</div>
+
+					<!-- 右：表格 -->
+					<div style="flex: 1;">
+						<div style="
+							height:100%;
+							display:flex;
+							flex-direction:column;
+							justify-content:center;
+						">
+							<span class="image fit" style="
+								border: 1px solid #e0e0e0;
+								border-radius: 10px;
+								overflow: hidden;
+								background:#fafafa;
+								display:flex;
+								align-items:center;
+								justify-content:center;
+								height:100%;
+							">
+								<img src="images/Sankey_Diagram.jpg"
+									style="
+										max-height:100%;
+										max-width:100%;
+										object-fit:contain;
+									">
+							</span>
+						</div>
+						<div class="eval-caption">
+							Failure Propagation
+						</div>
+					</div>
+				</div>
+				<br>				
+
+
+				<br>
+				<h3>Task 4 — Mouse → Pad 🖱️ (Verify the compatibility between UMI-3D and the original UMI)</h3>
+				<div style="
+					display: flex;
+					gap: 14px;
+					align-items: stretch;
+				">
+
+					<!-- 左：视频 -->
+					<div style="flex: 1.2;">
+						<video controls playsinline style="
+							width:100%;
+							height:100%;
+							object-fit: cover;
+							border-radius: 10px;
+							border: 1px solid #e6e6e6;
+							background:#000;
+						">
+							<source src="videos/all_mouse_exp.mp4" type="video/mp4">
+						</video>
+						<div class="eval-caption">All Experiments and Scores</div>
+					</div>
+
+					<!-- 右：表格 -->
+					<div style="flex: 1;">
+						<div style="
+							height:100%;
+							display:flex;
+							flex-direction:column;
+							justify-content:center;
+						">
+							<span class="image fit" style="
+								border: 1px solid #e0e0e0;
+								border-radius: 10px;
+								overflow: hidden;
+								background:#fafafa;
+								display:flex;
+								align-items:center;
+								justify-content:center;
+								height:100%;
+							">
+								<img src="images/mouse_experiment_table.jpg"
+									style="
+										max-height:100%;
+										max-width:100%;
+										object-fit:contain;
+									">
+							</span>
+						</div>
+						<div class="eval-caption">
+							Generalization Results
+						</div>
+					</div>
+
+				</div>
+
+				<br>
+				<hr>
+
+				<!-- ================= DATASET ================= -->
+				<h2 id="dataset">Dataset & Models</h2>
+				<p style="color:#111;">
+					(Placeholder) Add dataset scale, collection pipeline, synchronization/annotation, and download links here.
+					<br>
+					You can also update the Quick Links "Dataset" button to your GitHub Release / dataset page.
+				</p>
+
+				<hr>
+
+				<!-- ================= TEAM ================= -->
+				<h3>Team</h3>
+				<section>
+					<div class="box alt" style="margin-bottom: 1em;">
+						<div class="row 50% uniform" style="width: 100%">
+							<div class="2u" style="font-size: 1em; line-height: 1.5em; text-align: center; width: 15%">
+								<a href="https://ustc-flicar.github.io/contact/">
+									<span class="image fit" style="margin-bottom: 0.5em;">
+										<img src="images/ziming.jpg" alt="" style="border-radius: 50%;" />
+									</span>
+									Ziming Wang<sup>*1,2,3</sup>
+								</a>
+							</div>
+						</div>
+					</div>
+				</section>
+				<p>
+					<sup>1</sup> The University of Hong Kong&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<sup>2</sup> University of Science and Technology of China&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<sup>3</sup> Physical Intelligence Laboratory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</p>
+
+				<hr>
+
+				<!-- ================= PAPER ================= -->
+				<h3>Paper</h3>
+				<p style="margin-bottom: 0em;">
+					Latest version: <a href="https://arxiv.org/abs/2604.14089">arXiv</a> or <a href="umi_3d.pdf">here</a>.
+				</p>
+
+				<div class="12u$">
+					<a href="umi_3d.pdf">
+						<span class="image fit" style="border: 1px solid; border-color: #888888;">
+							<img src="images/umi_3d_thumbnail.jpg" alt="" />
+						</span>
+					</a>
+				</div>
+
+				<h3>BibTeX</h3>
+				<pre><code>comming soon</code></pre>
+
+				<hr>
+
+				<!-- ================= ACK ================= -->
+				<h3>Acknowledgements</h3>
+				<p>The author would like to thank Prof. Fu Zhang and Dr. Zhengrong Xue for their insightful and constructive discussions. The author also gratefully acknowledges Prof. Yanyong Zhang for providing essential computational resources that enabled this work.</p>
+
+				<h3>Contact</h3>
+				<p>If you have any questions, please feel free to contact <a href="https://ustc-flicar.github.io/contact/">Ziming Wang</a>.</p>
+
+				<div style="
+					margin-top: 1.5em;
+					padding-top: 0.8em;
+					border-top: 1px solid #e6e6e6;
+					text-align: center;
+					font-size: 0.95em;
+					color: #666;
+				">
+					Website template borrowed from 
+					<a href="https://umi-gripper.github.io/" target="_blank" rel="noopener noreferrer">
+						UMI
+					</a>.
+				</div>
+			</section>
+		</div>
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.poptrox.min.js"></script>
+		<script src="assets/js/skel.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+	</body>
+</html>
